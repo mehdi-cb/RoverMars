@@ -29,19 +29,8 @@ public class MarsRover implements Rover {
 
     @Override
     public Position getForwardPosition() {
-        if (direction == Direction.NORTH) {
-            return new Position(this.position.x(), this.position.y() + 1);
-        }
-        if (direction == Direction.SOUTH) {
-            return new Position(this.position.x(), this.position.y() - 1);
-        }
-        if (direction == Direction.EAST) {
-            return new Position(this.position.x() + 1, this.position.y());
-        }
-        if (direction == Direction.WEST) {
-            return new Position(this.position.x() - 1, this.position.y());
-        }
-
-        return null;
+        return new Position(
+                this.position.x() + direction.offsetX,
+                this.position.y() + direction.offsetY);
     }
 }
