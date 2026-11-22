@@ -1,17 +1,26 @@
 package fr.codebusters;
 
+import fr.codebusters.parser.FileParser;
+
+import java.io.IOException;
+import java.util.List;
+
 //TIP To <b>Run</b> code, press <shortcut actionId="Run"/> or
 // click the <icon src="AllIcons.Actions.Execute"/> icon in the gutter.
 public class Main {
-    static void main() {
-        //TIP Press <shortcut actionId="ShowIntentionActions"/> with your caret at the highlighted text
-        // to see how IntelliJ IDEA suggests fixing it.
-        IO.println(String.format("Hello and welcome!"));
+    static void main(String[] args) {
+        if (args.length != 1) {
+            System.err.println("Usage: java -jar Main.jar <file>");
+            System.exit(1);
+        }
+        String filePath = args[0];
+        GameEngine gameEngine = new GameEngine(new FileParser());
 
-        for (int i = 1; i <= 5; i++) {
-            //TIP Press <shortcut actionId="Debug"/> to start debugging your code. We have set one <icon src="AllIcons.Debugger.Db_set_breakpoint"/> breakpoint
-            // for you, but you can always add more by pressing <shortcut actionId="ToggleLineBreakpoint"/>.
-            IO.println("i = " + i);
+        try {
+            List<String> output = gameEngine.simulateWorld(filePath);
+            output.forEach(System.out::println);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 }
