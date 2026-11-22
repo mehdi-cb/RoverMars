@@ -33,6 +33,9 @@ public class FileParser {
             throw new InvalidInputFormat("Invalid rover init line: " + line);
         }
         Position position = new Position(Integer.parseInt(roverData[0]), Integer.parseInt(roverData[1]));
+        if (position.x() < 0 || position.y() < 0){
+            throw new InvalidInputFormat("Invalid rover spawn location: " + position);
+        }
         Direction direction = Direction.fromSymbol(roverData[2].charAt(0));
         return new MarsRover(position, direction);
     }
