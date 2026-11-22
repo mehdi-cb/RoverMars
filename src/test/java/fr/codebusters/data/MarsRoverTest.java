@@ -40,7 +40,6 @@ public class MarsRoverTest {
     })
     public void forwardRoverPositionNorth(Direction direction, int expectedX,  int expectedY) {
         rover.rotateRover(direction);
-        Position position = rover.getPosition();
         Position forwardPosition = rover.getForwardPosition();
         assertEquals(expectedX, forwardPosition.x());
         assertEquals(expectedY, forwardPosition.y());
