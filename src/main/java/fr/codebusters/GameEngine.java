@@ -4,7 +4,7 @@ import fr.codebusters.parser.FileParser;
 import fr.codebusters.rovers.Map;
 import fr.codebusters.rovers.data.Instruction;
 import fr.codebusters.rovers.data.Position;
-import fr.codebusters.rovers.data.MarsRover;
+import fr.codebusters.rovers.data.Rover;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -28,31 +28,31 @@ public class GameEngine {
         for (int i = 1; i < lines.size(); i+=2) {
             String roverPosition = lines.get(i);
             String roverInstructions = lines.get(i+1);
-            MarsRover rover = fileParser.parseRoverInit(roverPosition);
+            Rover rover = fileParser.parseMarsRoverInit(roverPosition);
             map.placeNewRover(rover);
             Stream<Instruction> instructionsStream = fileParser.parseRoverInstructions(roverInstructions);
             instructionsStream.forEach(instruction -> interprateInstruction(rover, instruction));
         }
 
-        return buildRoversResumee(map.getRovers());
+        return buildRoversSummary(map.getRovers());
     }
 
-    private void interprateInstruction(MarsRover rover, Instruction instruction){
+    private void interprateInstruction(Rover rover, Instruction instruction){
         if (instruction == Instruction.LEFT){
-            rover.setDirection(rover.getDirection().rotateLeft());
+            rover.rotateRover(rover.getDirection().rotateLeft());
         } else if  (instruction == Instruction.RIGHT){
-            rover.setDirection(rover.getDirection().rotateRight());
+            rover.rotateRover(rover.getDirection().rotateRight());
         } else if (instruction == Instruction.MOVE){
             Position forwardPosition = rover.getForwardPosition();
             this.map.moveRover(rover, forwardPosition);
         }
     }
 
-    private List<String> buildRoversResumee(List<MarsRover> rovers){
-        List<String> resumee = new ArrayList<>();
-        for(MarsRover rover : rovers){
-            resumee.add(rover.getPosition().toString() + " " + rover.getDirection().toString());
+    private List<String> buildRoversSummary(List<Rover> rovers){
+        List<String> summary = new ArrayList<>();
+        for(Rover rover : rovers){
+            summary.add(rover.getPosition().toString() + " " + rover.getDirection().toString());
         }
-        return resumee;
+        return summary;
     }
 }

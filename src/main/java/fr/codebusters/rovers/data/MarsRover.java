@@ -19,11 +19,8 @@ public class MarsRover implements Rover {
         return direction;
     }
 
-    public void setPosition(Position position) {
-        this.position = position;
-    }
-
-    public void setDirection(Direction direction) {
+    @Override
+    public void rotateRover(Direction direction) {
         this.direction = direction;
     }
 
@@ -32,5 +29,10 @@ public class MarsRover implements Rover {
         return new Position(
                 this.position.x() + direction.offsetX,
                 this.position.y() + direction.offsetY);
+    }
+
+    @Override
+    public void moveForward() {
+        this.position = getForwardPosition();
     }
 }

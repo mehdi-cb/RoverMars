@@ -1,5 +1,7 @@
 package fr.codebusters.rovers.data;
 
+import fr.codebusters.exceptions.InvalidRoverInstruction;
+
 public enum Direction {
     NORTH('N', 0, 1),
     EAST('E', 1, 0),
@@ -37,6 +39,6 @@ public enum Direction {
                 return direction;
             }
         }
-        throw new IllegalArgumentException("Invalid direction: " + (char)symbol);
+        throw new InvalidRoverInstruction("Invalid direction: " + symbol);
     }
 }

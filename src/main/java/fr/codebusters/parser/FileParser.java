@@ -1,5 +1,7 @@
 package fr.codebusters.parser;
 
+import fr.codebusters.exceptions.InvalidInputFormat;
+import fr.codebusters.exceptions.InvalidRoverInstruction;
 import fr.codebusters.rovers.data.Direction;
 import fr.codebusters.rovers.data.Instruction;
 import fr.codebusters.rovers.data.Position;
@@ -19,16 +21,16 @@ public class FileParser {
     public Position parseMapSize(String line) {
         String[] positions = line.split(" ");
         if (positions.length != 2) {
-            throw new IllegalArgumentException("Invalid map size line: " + line);
+            throw new InvalidInputFormat("Invalid map size line: " + line);
         }
 
         return new Position(Integer.parseInt(positions[0]), Integer.parseInt(positions[1]));
     }
 
-    public MarsRover parseRoverInit(String line){
+    public MarsRover parseMarsRoverInit(String line){
         String[] roverData = line.split(" ");
         if (roverData.length != 3) {
-            throw new IllegalArgumentException("Invalid rover init line: " + line);
+            throw new InvalidInputFormat("Invalid rover init line: " + line);
         }
         Position position = new Position(Integer.parseInt(roverData[0]), Integer.parseInt(roverData[1]));
         Direction direction = Direction.fromSymbol(roverData[2].charAt(0));
@@ -40,7 +42,7 @@ public class FileParser {
             case 'L' -> Instruction.LEFT;
             case 'R' -> Instruction.RIGHT;
             case 'M' -> Instruction.MOVE;
-            default -> throw new IllegalArgumentException("Invalid rover instruction: " + (char)c);
+            default -> throw new InvalidRoverInstruction("Invalid rover instruction: " + (char)c);
         });
     }
 }
