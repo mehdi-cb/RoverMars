@@ -2,6 +2,8 @@ package fr.codebusters.rovers.data;
 
 import fr.codebusters.exceptions.InvalidRoverInstruction;
 
+import java.util.Arrays;
+
 public enum Direction {
     NORTH('N', 0, 1),
     EAST('E', 1, 0),
@@ -17,8 +19,6 @@ public enum Direction {
         this.offsetX = offsetX;
         this.offsetY = offsetY;
     }
-
-    private static final Direction[] values = values();
 
     public Direction rotateLeft() {
         return switch (this){
@@ -44,11 +44,9 @@ public enum Direction {
     }
 
     public static Direction fromSymbol(char symbol) {
-        for (Direction direction : values()) {
-            if (direction.symbol == symbol) {
-                return direction;
-            }
-        }
-        throw new InvalidRoverInstruction("Invalid direction: " + symbol);
+        return Arrays.stream(values())
+                .filter(d -> d.symbol == symbol)
+                .findFirst()
+                .orElseThrow(() -> new InvalidRoverInstruction("Invalid direction: " + symbol));
     }
 }
