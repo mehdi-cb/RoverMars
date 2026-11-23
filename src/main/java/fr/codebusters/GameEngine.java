@@ -22,7 +22,7 @@ public class GameEngine {
     public List<String> simulateWorld(String inputFilePath) throws IOException {
         List<String> lines = fileParser.parseFile(inputFilePath);
 
-        Position position = fileParser.parseMapSize(lines.getFirst());
+        Position position = fileParser.parseBoardSize(lines.getFirst());
         this.board = new Board(position.x(), position.y());
 
         for (int i = 1; i < lines.size(); i+=2) {

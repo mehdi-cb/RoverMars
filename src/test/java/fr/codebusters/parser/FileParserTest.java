@@ -19,7 +19,7 @@ public class FileParserTest {
     // Map size parsing tests
     @Test
     public void parseMapSize(){
-        Position position = fileParser.parseMapSize("5 6");
+        Position position = fileParser.parseBoardSize("5 6");
 
         assertEquals(5, position.x());
         assertEquals(6, position.y());
@@ -27,7 +27,7 @@ public class FileParserTest {
 
     @Test
     public void parseMapSizeTwoDigits(){
-        Position position = fileParser.parseMapSize("35 48");
+        Position position = fileParser.parseBoardSize("35 48");
 
         assertEquals(35, position.x());
         assertEquals(48, position.y());
@@ -35,7 +35,7 @@ public class FileParserTest {
 
     @Test
     public void parseMapSizeLongDigits(){
-        Position position = fileParser.parseMapSize("3542 4828384");
+        Position position = fileParser.parseBoardSize("3542 4828384");
 
         assertEquals(3542, position.x());
         assertEquals(4828384, position.y());
@@ -43,12 +43,12 @@ public class FileParserTest {
 
     @Test
     public void parseTwoManyCoordinates(){
-        assertThrows(InvalidInputFormat.class, () -> fileParser.parseMapSize("2 3 4"));
+        assertThrows(InvalidInputFormat.class, () -> fileParser.parseBoardSize("2 3 4"));
     }
 
     @Test
     public void parseMapSizeInvalid(){
-        assertThrows(InvalidInputFormat.class, () -> fileParser.parseMapSize(""));
+        assertThrows(InvalidInputFormat.class, () -> fileParser.parseBoardSize(""));
     }
 
 

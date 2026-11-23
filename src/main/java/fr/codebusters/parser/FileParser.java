@@ -18,13 +18,17 @@ public class FileParser {
         return Files.readAllLines(Paths.get(inputFilePath));
     }
 
-    public Position parseMapSize(String line) {
+    public Position parseBoardSize(String line) {
         String[] positions = line.split(" ");
         if (positions.length != 2) {
             throw new InvalidInputFormat("Invalid map size line: " + line);
         }
 
-        return new Position(Integer.parseInt(positions[0]), Integer.parseInt(positions[1]));
+        try {
+            return new Position(Integer.parseInt(positions[0]), Integer.parseInt(positions[1]));
+        } catch (NumberFormatException e) {
+            throw new InvalidInputFormat("Invalid map size line: " + line);
+        }
     }
 
     public MarsRover parseMarsRoverInit(String line){
