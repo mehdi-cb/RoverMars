@@ -21,13 +21,12 @@ public class Board {
         rovers.add(rover);
     }
 
-    public boolean moveRover(Rover rover, Position newPosition) {
+    public void moveRover(Rover rover, Position newPosition) {
         if (!rovers.contains(rover) || !checkCoordinates(newPosition.x(), newPosition.y())) {
-            return false;
+            return;
         }
 
         rover.moveForward();
-        return true;
     }
 
     private boolean checkCoordinates(int x, int y) {

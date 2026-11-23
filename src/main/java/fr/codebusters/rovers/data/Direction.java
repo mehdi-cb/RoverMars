@@ -21,11 +21,21 @@ public enum Direction {
     private static final Direction[] values = values();
 
     public Direction rotateLeft() {
-        return values[(this.ordinal() + values.length - 1) % values.length];
+        return switch (this){
+            case NORTH -> WEST;
+            case EAST -> NORTH;
+            case SOUTH -> EAST;
+            case WEST -> SOUTH;
+        };
     }
 
     public Direction rotateRight() {
-        return values[(this.ordinal() + 1) % values.length];
+        return switch (this){
+            case NORTH -> EAST;
+            case EAST -> SOUTH;
+            case SOUTH -> WEST;
+            case WEST -> NORTH;
+        };
     }
 
     @Override

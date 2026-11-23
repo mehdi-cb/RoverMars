@@ -31,20 +31,20 @@ public class GameEngine {
             Rover rover = fileParser.parseMarsRoverInit(roverPosition);
             board.placeNewRover(rover);
             Stream<Instruction> instructionsStream = fileParser.parseRoverInstructions(roverInstructions);
-            instructionsStream.forEach(instruction -> interprateInstruction(rover, instruction));
+            instructionsStream.forEach(instruction -> interpretInstruction(rover, instruction));
         }
 
         return buildRoversSummary(board.getRovers());
     }
 
-    private void interprateInstruction(Rover rover, Instruction instruction){
-        if (instruction == Instruction.LEFT){
-            rover.rotateRover(rover.getDirection().rotateLeft());
-        } else if  (instruction == Instruction.RIGHT){
-            rover.rotateRover(rover.getDirection().rotateRight());
-        } else if (instruction == Instruction.MOVE){
-            Position forwardPosition = rover.getForwardPosition();
-            this.board.moveRover(rover, forwardPosition);
+    private void interpretInstruction(Rover rover, Instruction instruction){
+        switch (instruction){
+            case LEFT -> rover.rotateRover(rover.getDirection().rotateLeft());
+            case RIGHT -> rover.rotateRover(rover.getDirection().rotateRight());
+            case MOVE -> {
+                Position forwardPosition = rover.getForwardPosition();
+                this.board.moveRover(rover, forwardPosition);
+            }
         }
     }
 
