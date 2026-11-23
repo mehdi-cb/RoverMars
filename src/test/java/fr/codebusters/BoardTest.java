@@ -1,6 +1,6 @@
 package fr.codebusters;
 
-import fr.codebusters.rovers.Map;
+import fr.codebusters.rovers.Board;
 import fr.codebusters.rovers.data.Direction;
 import fr.codebusters.rovers.data.MarsRover;
 import fr.codebusters.rovers.data.Position;
@@ -15,27 +15,27 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
-public class MapTest {
-    private Map map;
+public class BoardTest {
+    private Board board;
     private Rover rover;
 
     @BeforeEach
     public void setUp() {
-        this.map = new Map(10, 10);
+        this.board = new Board(10, 10);
         this.rover = new MarsRover(new Position(1, 1), Direction.NORTH);
     }
 
     @Test
     public void spawnRover(){
-        map.placeNewRover(rover);
-        assertEquals(1, map.getRovers().size());
-        assertEquals(rover, map.getRovers().getFirst());
+        board.placeNewRover(rover);
+        assertEquals(1, board.getRovers().size());
+        assertEquals(rover, board.getRovers().getFirst());
     }
 
     @Test
     public void moveRover(){
-        map.placeNewRover(rover);
-        map.moveRover(rover, rover.getForwardPosition());
+        board.placeNewRover(rover);
+        board.moveRover(rover, rover.getForwardPosition());
         assertEquals(1, rover.getPosition().x());
         assertEquals(2, rover.getPosition().y());
     }
@@ -43,9 +43,9 @@ public class MapTest {
     @ParameterizedTest
     @MethodSource("getEdgeRovers")
     public void moveRoverAtEdge(Rover rover){
-        map.placeNewRover(rover);
+        board.placeNewRover(rover);
         Position previousPosition = rover.getPosition();
-        map.moveRover(rover, rover.getForwardPosition());
+        board.moveRover(rover, rover.getForwardPosition());
         assertEquals(previousPosition.x(), rover.getPosition().x());
         assertEquals(previousPosition.y(), rover.getPosition().y());
     }

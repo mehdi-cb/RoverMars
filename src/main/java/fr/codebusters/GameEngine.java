@@ -1,7 +1,7 @@
 package fr.codebusters;
 
 import fr.codebusters.parser.FileParser;
-import fr.codebusters.rovers.Map;
+import fr.codebusters.rovers.Board;
 import fr.codebusters.rovers.data.Instruction;
 import fr.codebusters.rovers.data.Position;
 import fr.codebusters.rovers.data.Rover;
@@ -13,7 +13,7 @@ import java.util.stream.Stream;
 
 public class GameEngine {
     private final FileParser fileParser;
-    private Map map;
+    private Board board;
 
     public GameEngine(FileParser fileParser) {
         this.fileParser = fileParser;
@@ -23,18 +23,18 @@ public class GameEngine {
         List<String> lines = fileParser.parseFile(inputFilePath);
 
         Position position = fileParser.parseMapSize(lines.getFirst());
-        this.map = new Map(position.x(), position.y());
+        this.board = new Board(position.x(), position.y());
 
         for (int i = 1; i < lines.size(); i+=2) {
             String roverPosition = lines.get(i);
             String roverInstructions = lines.get(i+1);
             Rover rover = fileParser.parseMarsRoverInit(roverPosition);
-            map.placeNewRover(rover);
+            board.placeNewRover(rover);
             Stream<Instruction> instructionsStream = fileParser.parseRoverInstructions(roverInstructions);
             instructionsStream.forEach(instruction -> interprateInstruction(rover, instruction));
         }
 
-        return buildRoversSummary(map.getRovers());
+        return buildRoversSummary(board.getRovers());
     }
 
     private void interprateInstruction(Rover rover, Instruction instruction){
@@ -44,7 +44,7 @@ public class GameEngine {
             rover.rotateRover(rover.getDirection().rotateRight());
         } else if (instruction == Instruction.MOVE){
             Position forwardPosition = rover.getForwardPosition();
-            this.map.moveRover(rover, forwardPosition);
+            this.board.moveRover(rover, forwardPosition);
         }
     }
 
