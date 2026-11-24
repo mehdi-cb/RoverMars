@@ -2,8 +2,9 @@ package fr.codebusters.rovers.data;
 
 public interface Rover {
     Position getPosition();
-    Direction getDirection();
+    Orientation getOrientation();
     Position getForwardPosition();
-    void moveForward();
-    void rotateRover(Direction direction);
+    void moveForward(Position newPosition);
+    void rotateRover(Orientation orientation);
+    String describe();
 }

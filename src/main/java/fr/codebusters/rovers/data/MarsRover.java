@@ -2,11 +2,11 @@ package fr.codebusters.rovers.data;
 
 public class MarsRover implements Rover {
     private Position position;
-    private Direction direction;
+    private Orientation orientation;
 
-    public MarsRover(Position position, Direction direction) {
+    public MarsRover(Position position, Orientation orientation) {
         this.position = position;
-        this.direction = direction;
+        this.orientation = orientation;
     }
 
     @Override
@@ -15,24 +15,26 @@ public class MarsRover implements Rover {
     }
 
     @Override
-    public Direction getDirection() {
-        return direction;
+    public Orientation getOrientation() {
+        return orientation;
     }
 
     @Override
-    public void rotateRover(Direction direction) {
-        this.direction = direction;
+    public void rotateRover(Orientation orientation) {
+        this.orientation = orientation;
     }
 
     @Override
     public Position getForwardPosition() {
-        return new Position(
-                this.position.x() + direction.offsetX,
-                this.position.y() + direction.offsetY);
+        return this.position.getForwardPosition(this.orientation);
     }
 
     @Override
-    public void moveForward() {
-        this.position = getForwardPosition();
+    public void moveForward(Position newPosition) {
+        this.position = newPosition;
+    }
+
+    public String describe(){
+        return this.position.toString() + " " + this.orientation.toString();
     }
 }

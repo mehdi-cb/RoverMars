@@ -1,9 +1,6 @@
 package fr.codebusters.data;
 
-import fr.codebusters.rovers.data.Direction;
-import fr.codebusters.rovers.data.MarsRover;
-import fr.codebusters.rovers.data.Position;
-import fr.codebusters.rovers.data.Rover;
+import fr.codebusters.rovers.data.*;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -16,19 +13,19 @@ public class MarsRoverTest {
 
     @BeforeEach
     public void setUp() {
-        rover = new MarsRover(new Position(5, 5), Direction.NORTH);
+        rover = new MarsRover(new Position(5, 5), Orientation.NORTH);
     }
 
     @Test
     public void roverInitialization() {
         assertEquals(new Position(5,5), rover.getPosition());
-        assertEquals(Direction.NORTH, rover.getDirection());
+        assertEquals(Orientation.NORTH, rover.getOrientation());
     }
 
     @Test
     public void rotateRover() {
-        rover.rotateRover(Direction.SOUTH);
-        assertEquals(Direction.SOUTH, rover.getDirection());
+        rover.rotateRover(Orientation.SOUTH);
+        assertEquals(Orientation.SOUTH, rover.getOrientation());
     }
 
     @ParameterizedTest
@@ -38,8 +35,8 @@ public class MarsRoverTest {
             "SOUTH, 5, 4",
             "WEST, 4, 5"
     })
-    public void forwardRoverPositionNorth(Direction direction, int expectedX,  int expectedY) {
-        rover.rotateRover(direction);
+    public void forwardRoverPositionNorth(Orientation orientation, int expectedX, int expectedY) {
+        rover.rotateRover(orientation);
         Position forwardPosition = rover.getForwardPosition();
         assertEquals(expectedX, forwardPosition.x());
         assertEquals(expectedY, forwardPosition.y());

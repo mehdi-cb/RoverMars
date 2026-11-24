@@ -1,36 +1,41 @@
 package fr.codebusters;
 
-import fr.codebusters.parser.FileParser;
+import fr.codebusters.parser.RoverInstructionParser;
 import fr.codebusters.rovers.Board;
 import fr.codebusters.rovers.data.Instruction;
 import fr.codebusters.rovers.data.Position;
 import fr.codebusters.rovers.data.Rover;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class GameEngine {
-    private final FileParser fileParser;
+    private static final Logger LOGGER = LoggerFactory.getLogger(GameEngine.class);
+
+    private final RoverInstructionParser roverInstructionParser;
     private Board board;
 
-    public GameEngine(FileParser fileParser) {
-        this.fileParser = fileParser;
+    public GameEngine(RoverInstructionParser roverInstructionParser) {
+        this.roverInstructionParser = roverInstructionParser;
     }
 
-    public List<String> simulateWorld(String inputFilePath) throws IOException {
-        List<String> lines = fileParser.parseFile(inputFilePath);
+    public String simulateWorld(String inputFilePath) throws IOException {
+        List<String> lines = roverInstructionParser.parseFile(inputFilePath);
 
-        Position position = fileParser.parseBoardSize(lines.getFirst());
-        this.board = new Board(position.x(), position.y());
+        Position boardSize = roverInstructionParser.parseBoardSize(lines.getFirst());
+        this.board = new Board(boardSize.x(), boardSize.y());
 
-        for (int i = 1; i < lines.size(); i+=2) {
+        for (int i = 1; i < lines.size() - 1; i+=2) {
+            LOGGER.info("A new rover landed on Mars !");
             String roverPosition = lines.get(i);
             String roverInstructions = lines.get(i+1);
-            Rover rover = fileParser.parseMarsRoverInit(roverPosition);
+            Rover rover = roverInstructionParser.parseMarsRoverInit(roverPosition);
             board.placeNewRover(rover);
-            Stream<Instruction> instructionsStream = fileParser.parseRoverInstructions(roverInstructions);
+            Stream<Instruction> instructionsStream = Instruction.fromInstructionSeries(roverInstructions);
             instructionsStream.forEach(instruction -> interpretInstruction(rover, instruction));
         }
 
@@ -39,8 +44,8 @@ public class GameEngine {
 
     private void interpretInstruction(Rover rover, Instruction instruction){
         switch (instruction){
-            case LEFT -> rover.rotateRover(rover.getDirection().rotateLeft());
-            case RIGHT -> rover.rotateRover(rover.getDirection().rotateRight());
+            case LEFT -> rover.rotateRover(rover.getOrientation().rotateLeft());
+            case RIGHT -> rover.rotateRover(rover.getOrientation().rotateRight());
             case MOVE -> {
                 Position forwardPosition = rover.getForwardPosition();
                 this.board.moveRover(rover, forwardPosition);
@@ -48,11 +53,7 @@ public class GameEngine {
         }
     }
 
-    private List<String> buildRoversSummary(List<Rover> rovers){
-        List<String> summary = new ArrayList<>();
-        for(Rover rover : rovers){
-            summary.add(rover.getPosition().toString() + " " + rover.getDirection().toString());
-        }
-        return summary;
+    private String buildRoversSummary(List<Rover> rovers){
+        return rovers.stream().map(Rover::describe).collect(Collectors.joining("\n"));
     }
 }

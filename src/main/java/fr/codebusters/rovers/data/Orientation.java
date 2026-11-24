@@ -4,23 +4,23 @@ import fr.codebusters.exceptions.InvalidRoverInstruction;
 
 import java.util.Arrays;
 
-public enum Direction {
+public enum Orientation {
     NORTH('N', 0, 1),
     EAST('E', 1, 0),
     SOUTH('S', 0, -1),
     WEST('W', -1, 0);
 
     private final char symbol;
-    public final int offsetX;
-    public final int offsetY;
+    private final int offsetX;
+    private final int offsetY;
 
-    Direction(char symbol,  int offsetX, int offsetY) {
+    Orientation(char symbol, int offsetX, int offsetY) {
         this.symbol = symbol;
         this.offsetX = offsetX;
         this.offsetY = offsetY;
     }
 
-    public Direction rotateLeft() {
+    public Orientation rotateLeft() {
         return switch (this){
             case NORTH -> WEST;
             case EAST -> NORTH;
@@ -29,7 +29,7 @@ public enum Direction {
         };
     }
 
-    public Direction rotateRight() {
+    public Orientation rotateRight() {
         return switch (this){
             case NORTH -> EAST;
             case EAST -> SOUTH;
@@ -43,10 +43,18 @@ public enum Direction {
         return String.valueOf(symbol);
     }
 
-    public static Direction fromSymbol(char symbol) {
+    public static Orientation fromSymbol(char symbol) {
         return Arrays.stream(values())
                 .filter(d -> d.symbol == symbol)
                 .findFirst()
                 .orElseThrow(() -> new InvalidRoverInstruction("Invalid direction: " + symbol));
+    }
+
+    public int getOffsetX() {
+        return offsetX;
+    }
+
+    public int getOffsetY() {
+        return offsetY;
     }
 }

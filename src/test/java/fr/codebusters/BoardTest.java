@@ -1,7 +1,7 @@
 package fr.codebusters;
 
 import fr.codebusters.rovers.Board;
-import fr.codebusters.rovers.data.Direction;
+import fr.codebusters.rovers.data.Orientation;
 import fr.codebusters.rovers.data.MarsRover;
 import fr.codebusters.rovers.data.Position;
 import fr.codebusters.rovers.data.Rover;
@@ -22,7 +22,7 @@ public class BoardTest {
     @BeforeEach
     public void setUp() {
         this.board = new Board(10, 10);
-        this.rover = new MarsRover(new Position(1, 1), Direction.NORTH);
+        this.rover = new MarsRover(new Position(1, 1), Orientation.NORTH);
     }
 
     @Test
@@ -52,8 +52,8 @@ public class BoardTest {
 
     static Stream<Arguments> getEdgeRovers(){
         return Stream.of(
-                Arguments.of(new MarsRover(new Position(10, 10), Direction.EAST)),
-                Arguments.of(new MarsRover(new Position(0, 0), Direction.WEST))
+                Arguments.of(new MarsRover(new Position(10, 10), Orientation.EAST)),
+                Arguments.of(new MarsRover(new Position(0, 0), Orientation.WEST))
         );
     }
 }
