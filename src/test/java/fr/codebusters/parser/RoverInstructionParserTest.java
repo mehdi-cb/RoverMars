@@ -5,8 +5,6 @@ import fr.codebusters.exceptions.InvalidRoverInstruction;
 import fr.codebusters.rovers.data.*;
 import org.junit.jupiter.api.Test;
 
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
